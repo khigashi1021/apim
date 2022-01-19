@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+ targetNamespace="http://www.example.org/service"
+ xmlns:svc="http://www.example.org/service"
+ xmlns:req="http://www.example.org/request"
+ xmlns:res="http://www.example.org/response"
+ xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.example.org/request">
+      <xsd:element name="Request1" type="xsd:string" />
+    </xsd:schema>
+    <xsd:schema targetNamespace="http://www.example.org/response">
+      <xsd:element name="Response1" type="xsd:boolean" />
+    </xsd:schema>
+    <xsd:schema targetNamespace="http://www.example.org/service">
+      <xsd:element name="Fault1" type="svc:SampleData"/>
+      <xsd:complexType name="SampleData">
+        <xsd:sequence>
+          <xsd:element name="param1" type="xsd:int"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ReqMsg1">
+    <wsdl:part element="req:Request1" name="reqParam"/>
+  </wsdl:message>
+  <wsdl:message name="ResMsg1">
+    <wsdl:part element="res:Response1" name="resParam"/>
+  </wsdl:message>
+  <wsdl:message name="FltMsg1">
+    <wsdl:part element="svc:Fault1" name="fltParam"/>
+  </wsdl:message>
+  <wsdl:portType name="SamplePortType">
+    <wsdl:operation name="operation1">
+      <wsdl:input message="svc:ReqMsg1"/>
+      <wsdl:output message="svc:ResMsg1"/>
+      <wsdl:fault message="svc:FltMsg1" name="Fault1"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SampleBinding" type="svc:SamplePortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="operation1">
+      <soap:operation soapAction=""/>
+      <wsdl:input>
+        <soap:body/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body/>
+      </wsdl:output>
+      <wsdl:fault name="Fault1">
+        <soap:fault name="Fault1"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SampleService">
+    <wsdl:port binding="svc:SampleBinding" name="UserInfo">
+      <soap:address location="http://localhost:80/SampleService/services/UserInfo" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
